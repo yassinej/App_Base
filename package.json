@@ -4,17 +4,39 @@
 	"description": "Basic MERN stack using Redux",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon index.js"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yassinej/App_Base.git"
 	},
-	"keywords": ["mern", "react", "mongodb", "express", "node", "boilerplate"],
+	"keywords": [
+		"mern",
+		"react",
+		"mongodb",
+		"express",
+		"node",
+		"boilerplate"
+	],
 	"author": "JazyLabs",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/yassinej/App_Base/issues"
 	},
-	"homepage": "https://github.com/yassinej/App_Base#readme"
+	"homepage": "https://github.com/yassinej/App_Base#readme",
+	"dependencies": {
+		"bcrypt-nodejs": "0.0.3",
+		"body-parser": "^1.18.1",
+		"cookie-parser": "^1.4.3",
+		"express": "^4.15.4",
+		"jwt-simple": "^0.5.1",
+		"mongoose": "^4.11.11",
+		"nodemon": "^1.12.0",
+		"passport": "^0.4.0",
+		"passport-facebook": "^2.1.1",
+		"passport-google-oauth20": "^1.0.0",
+		"passport-jwt": "^3.0.0",
+		"passport-local": "^1.0.0"
+	}
 }

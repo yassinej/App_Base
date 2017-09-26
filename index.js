@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-
+const morgan = require('morgan');
+const cors = require('cors');
 //Local ressources import
 const keys = require('./config/keys');
 //DB connection
@@ -13,7 +14,8 @@ mongoose.connect(keys.mongoURI);
 
 //Server Setup
 const app = express();
-
+app.use(morgan('combined'));
+app.use(cors());
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));

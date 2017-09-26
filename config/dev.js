@@ -1,4 +1,4 @@
 module.exports = {
-	mongoURI: 'mongodb://localhost:app_base',
+	mongoURI: 'mongodb://admin:password@ds151544.mlab.com:51544/app_base',
 	jwtSecret: 'zjzeiughdizhflizhozerhferiufhrekfhgaufhazfgfoerf'
 };

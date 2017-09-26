@@ -18,7 +18,6 @@ exports.signup = (req, res, next) => {
 		if (err) return next(err);
 		//if existing user send error
 		if (existingUser) return res.status(422).send({ error: 'Email is in use' });
-
 		//if no existing user create and save it
 		const user = new User({ email: email, password: password });
 		user.save(err => {
@@ -31,5 +30,12 @@ exports.signup = (req, res, next) => {
 };
 
 exports.signin = (req, res, next) => {
+	console.log(req.body);
+	const { email, password } = req.body;
+	if (!email || !password)
+		return res
+			.status(422)
+			.send({ error: 'You must provide Email and Password' });
+
 	res.send({ token: tokenForUser(req.user) });
 };

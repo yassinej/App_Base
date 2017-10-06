@@ -1,7 +1,7 @@
 import { renderRouterComponent, expect, $ } from '../test_helper';
-import Header from '../../src/components/Header';
+import NavBar from '../../src/components/NavBar';
 
-describe('Header', () => {
+describe('NavBar', () => {
 	let component, links;
 
 	beforeEach(() => {

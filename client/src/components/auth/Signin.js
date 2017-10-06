@@ -3,6 +3,20 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../actions/authActions';
+import SocialLogin from './SocialLogin';
+import {
+	Button,
+	Container,
+	Label,
+	Grid,
+	Header,
+	Icon,
+	Segment,
+	Image,
+	Message,
+	Form,
+	Divider
+} from 'semantic-ui-react';
 
 const validate = values => {
 	const errors = {};
@@ -18,18 +32,30 @@ const validate = values => {
 	return errors;
 };
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => (
-	<div className="form-group">
-		<label>{label}</label>
-		<div>
-			<input
-				className="form-control"
-				{...input}
-				placeholder={label}
-				type={type}
-			/>
-			{touched && (error && <span className="text-danger">{error}</span>)}
-		</div>
+const renderField = ({
+	input,
+	label,
+	type,
+	icon,
+	meta: { touched, error }
+}) => (
+	<div>
+		<Form.Input
+			fluid
+			icon={icon}
+			{...input}
+			iconPosition="left"
+			placeholder={label}
+			label={label}
+			type={type}
+			style={{ marginTop: 20, marginBottom: 10 }}
+		/>
+		{touched &&
+			(error && (
+				<Message negative size="mini">
+					<Message.Header>{error}</Message.Header>
+				</Message>
+			))}
 	</div>
 );
 
@@ -40,61 +66,74 @@ class Signin extends Component {
 	renderAlert() {
 		if (this.props.errorMessage) {
 			return (
-				<div className="alert alert-danger">
-					<strong>Oops! </strong>
-					{this.props.errorMessage}
-				</div>
+				<Message negative size="small">
+					<Message.Header>{this.props.errorMessage}</Message.Header>
+				</Message>
 			);
 		}
 	}
 	render() {
-		const { handleSubmit, pristine, reset, submitting } = this.props;
+		const {
+			handleSubmit,
+			pristine,
+			reset,
+			submitting,
+			submitSucceeded
+		} = this.props;
 		return (
-			<div className="container">
-				<div className="row">
-					<div className="col-3" />
-					<div className="col-6 align-self-center">
-						<h2 className="heading text-center">Signin Page</h2>
-						<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-							<Field
-								name="email"
-								type="email"
-								component={renderField}
-								label="Email"
-							/>
-							<Field
-								name="password"
-								type="password"
-								component={renderField}
-								label="Password"
-							/>
-							{this.renderAlert()}
-							<div>
-								<button
-									type="submit"
-									disabled={submitting}
-									className="btn btn-primary"
-								>
-									Submit
-								</button>
-								<button
-									type="button"
-									disabled={pristine || submitting}
-									onClick={reset}
-									className="btn btn-warning float-right"
-								>
-									Clear Values
-								</button>
-							</div>
-						</form>
-						<p className="small">
-							Don't have an account yet <Link to="/signup">Sign Up.</Link>
-						</p>
-					</div>
+			<Container style={{ marginTop: '10em' }}>
+				<Grid columns={2} stackable>
+					<Grid.Row stretched>
+						<Grid.Column>
+							<Segment>
+								<Header as="h2" textAlign="center">
+									Sign In to your account
+								</Header>
+								<Form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+									<Field
+										name="email"
+										type="email"
+										component={renderField}
+										label="Email"
+										icon="user"
+									/>
+									<Field
+										name="password"
+										type="password"
+										component={renderField}
+										label="Password"
+										icon="lock"
+									/>
+									{submitSucceeded ? this.renderAlert() : ''}
+									<Container style={{ marginTop: 20 }}>
+										<Button
+											content="Sign In"
+											type="submit"
+											disabled={submitting}
+											floated="left"
+											primary
+										/>
 
-					<div className="col-3" />
-				</div>
-			</div>
+										<Button
+											content="Clear values"
+											disabled={pristine || submitting}
+											onClick={reset}
+											color="grey"
+											floated="right"
+										/>
+									</Container>
+								</Form>
+								<Container style={{ marginTop: 82 }}>
+									<Header as="h4">
+										Don't have an account yet <Link to="/signup">Sign Up.</Link>
+									</Header>
+								</Container>
+							</Segment>
+						</Grid.Column>
+						<SocialLogin />
+					</Grid.Row>
+				</Grid>
+			</Container>
 		);
 	}
 }

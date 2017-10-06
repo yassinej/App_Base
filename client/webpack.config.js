@@ -24,7 +24,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.scss$/,
+				test: /\.(scss|css)$/,
 				use: cssConfig
 			},
 			{
@@ -46,11 +46,6 @@ module.exports = {
 	},
 	devtool: 'cheap-module-source-map',
 	devServer: {
-		proxy: {
-			// proxy URLs to backend development server
-			'/api': 'http://localhost:5000',
-			'/auth': 'http://localhost:5000'
-		},
 		contentBase: path.join(__dirname, 'dist'),
 		compress: true,
 		port: 9000,
@@ -59,6 +54,17 @@ module.exports = {
 		hot: true,
 		watchOptions: {
 			ignored: /node_modules/
+		},
+		proxy: {
+			'/api': {
+				target: 'http://localhost:5000',
+				secure: false
+			},
+			'/auth': {
+				target: 'http://localhost:5000',
+
+				secure: false
+			}
 		},
 
 		historyApiFallback: {
@@ -76,12 +82,6 @@ module.exports = {
 			allChunks: true
 		}),
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NamedModulesPlugin(),
-		new webpack.ProvidePlugin({
-			$: 'jquery',
-			jQuery: 'jquery',
-			'window.jQuery': 'jquery',
-			Popper: ['popper.js', 'default']
-		})
+		new webpack.NamedModulesPlugin()
 	]
 };

@@ -3,13 +3,25 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../actions/authActions';
+import {
+	Button,
+	Container,
+	Label,
+	Grid,
+	Header,
+	Icon,
+	Segment,
+	Image,
+	Message,
+	Form
+} from 'semantic-ui-react';
 
 const validate = values => {
 	const errors = {};
 	if (!values.password) {
 		errors.password = 'Required';
 	} else if (values.password.length < 8) {
-		errors.password = 'Must be 8 characters or less';
+		errors.password = 'Must be 8 characters or More';
 	}
 	if (!values.confirmPassword) {
 		errors.confirmPassword = 'Required';
@@ -25,18 +37,30 @@ const validate = values => {
 	return errors;
 };
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => (
-	<div className="form-group">
-		<label>{label}</label>
-		<div>
-			<input
-				className="form-control"
-				{...input}
-				placeholder={label}
-				type={type}
-			/>
-			{touched && (error && <span className="text-danger">{error}</span>)}
-		</div>
+const renderField = ({
+	input,
+	label,
+	type,
+	icon,
+	meta: { touched, error }
+}) => (
+	<div>
+		<Form.Input
+			fluid
+			icon={icon}
+			{...input}
+			iconPosition="left"
+			placeholder={label}
+			label={label}
+			type={type}
+			style={{ marginTop: 20, marginBottom: 10 }}
+		/>
+		{touched &&
+			(error && (
+				<Message negative size="mini">
+					<Message.Header>{error}</Message.Header>
+				</Message>
+			))}
 	</div>
 );
 
@@ -45,61 +69,84 @@ class Signup extends Component {
 		this.props.signupUser({ email, password });
 	}
 	renderAlert() {
+		console.log('render alert ', this.props.errorMessage);
 		if (this.props.errorMessage) {
 			return (
-				<div className="alert alert-danger">
-					<strong>Oops!</strong>
-					{this.props.errorMessage}
-				</div>
+				<Message negative size="small">
+					<Message.Header>{this.props.errorMessage}</Message.Header>
+				</Message>
 			);
 		}
 	}
 	render() {
-		const { handleSubmit, pristine, reset, submitting } = this.props;
+		const {
+			handleSubmit,
+			pristine,
+			reset,
+			submitting,
+			submitSucceeded
+		} = this.props;
 		return (
-			<div className="container">
-				<div className="row">
-					<div className="col-3" />
-					<div className="col-6 align-self-center">
-						<h2 className="heading text-center">Signup Page</h2>
-						<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-							<Field
-								name="email"
-								type="email"
-								component={renderField}
-								label="Email"
-							/>
-							<Field
-								name="password"
-								type="password"
-								component={renderField}
-								label="Password"
-							/>
-							<Field
-								name="confirmPassword"
-								type="password"
-								component={renderField}
-								label="Confirm Password"
-							/>
-							{this.renderAlert()}
-							<div>
-								<button type="submit" className="btn btn-primary">
-									Submit
-								</button>
-								<button
-									type="button"
-									disabled={pristine || submitting}
-									onClick={reset}
-									className="btn btn-warning float-right"
+			<Container style={{ marginTop: '10em' }}>
+				<Grid columns="equal" style={{ height: '100%' }}>
+					<Grid.Row stretched>
+						<Grid.Column />
+
+						<Grid.Column width={8} style={{ maxWidth: 450, marginTop: 20 }}>
+							<Segment>
+								<Header as="h2" textAlign="center">
+									Sign Up a new account
+								</Header>
+								<Form
+									onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}
+									size="large"
 								>
-									Clear Values
-								</button>
-							</div>
-						</form>
-					</div>
-					<div className="col-3" />
-				</div>
-			</div>
+									<Field
+										name="email"
+										type="email"
+										component={renderField}
+										label="Email"
+										icon="user"
+									/>
+									<Field
+										name="password"
+										type="password"
+										component={renderField}
+										label="Password"
+										icon="lock"
+									/>
+									<Field
+										name="confirmPassword"
+										type="password"
+										component={renderField}
+										label="Confirm Password"
+										icon="lock"
+									/>
+									{submitSucceeded ? this.renderAlert() : ''}
+									<Container style={{ marginTop: 20 }}>
+										<Button
+											content="Sign Up"
+											type="submit"
+											disabled={submitting}
+											color="black"
+											floated="left"
+										/>
+
+										<Button
+											content="Clear values"
+											disabled={pristine || submitting}
+											onClick={reset}
+											color="grey"
+											floated="right"
+										/>
+									</Container>
+								</Form>
+							</Segment>
+						</Grid.Column>
+						<Grid.Column />
+					</Grid.Row>
+				</Grid>
+			</Container>
 		);
 	}
 }

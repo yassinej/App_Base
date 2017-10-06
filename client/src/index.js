@@ -5,8 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import App from './components/App';
 import { AUTH_USER } from './actions/types';
-import './assets/styles/index.scss';
-import 'bootstrap/scss/bootstrap.scss';
+
 import reducers from './reducers';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
